@@ -1,12 +1,11 @@
 let oscs = [];
-let CELL = 50;
+let CELL = 21;
 var notes = [ 48, 50, 52, 53, 55, 57, 59,
 	            60, 62, 64, 65, 67, 69, 71,
 						  72, 74, 76, 77, 79, 81, 83];
 var osc,env,osc1;
 
 function soundinit(){
-	env = new p5.Envelope();
 	
 	for(var i = 0; i < CELL;i++){
 		var nimod = i%21;
@@ -19,6 +18,7 @@ function soundinit(){
 
 
 function myNote(note){
+	this.note = note;
 	this.freq = midiToFreq(note);
 	this.osc = new p5.Oscillator('sine');
     
@@ -27,11 +27,21 @@ function myNote(note){
 
 	this.play = function(){
         this.osc.freq(this.freq);
-  	    this.osc.amp(0.5, 0.5);
+  	    this.osc.amp(0.05, 0.1);
 
         setTimeout(() => {
             this.osc.amp(0);
-        }, 1000);
+        }, 500);
 	}
 	
+}
+function midiToFreq(midiNote) {
+    // MIDIノート番号から周波数を計算
+    return 440 * Math.pow(2, (midiNote - 69) / 12);
+}
+
+class orgenNote{
+	constructor(){
+		
+	}
 }
