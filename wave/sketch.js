@@ -1,45 +1,30 @@
 let canvassize = 500;
 let waves = [];
-
+let num = 20;
 function setup() {
+  frameRate(5);
   angleMode(DEGREES)
   createCanvas(canvassize, canvassize);
   initWaves();
-  blendMode(ADD);
+  strokeWeight(5);
+
 }
 
 function draw() {
-  //background(0,0,100*tan(frameCount*0.1));
-  clear(0,0,0);
-  background(0,0,0,250);
-  //translate(canvassize*0.4,canvassize*0.5)
-  //rotate(frameCount);
-  var s = 0.5*(1+0.5*sin(frameCount));
-  scale(s,s,s);
-  //clear(0,0,0);
-  var sw = 3*(1+0.5*sin(frameCount*1));
-  if(sw <= 0){
-    initWaves();
-  }
-
-
-
-  drawingContext.setLineDash([5, 5]);
-  strokeWeight(sw)
-  waves1.forEach(w => {
+  background(0,0,0);
+  waves.forEach(w => {
     w.draw();
   });
+
 
 }
 
 function initWaves(){
-  waves1 = [];
-  for(var i = 0; i <3;i++){
-    waves1.push(new wave(canvassize));
+  waves = [];
+  var amp = canvassize / num;
+  for(var i = 0; i <num+1;i++){
+    waves.push(new wave(canvassize,amp*(i),amp));
   }
 
-  waves2 = [];
-  for(var i = 0; i <3;i++){
-    waves2.push(new wave(canvassize));
-  }
+  
 }
