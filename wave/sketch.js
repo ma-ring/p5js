@@ -12,8 +12,8 @@ function draw() {
   //background(0,0,100*tan(frameCount*0.1));
   clear(0,0,0);
   background(0,0,0,250);
-  translate(canvassize*0.4,canvassize*0.5)
-  rotate(frameCount);
+  //translate(canvassize*0.4,canvassize*0.5)
+  //rotate(frameCount);
   var s = 0.5*(1+0.5*sin(frameCount));
   scale(s,s,s);
   //clear(0,0,0);
@@ -27,11 +27,6 @@ function draw() {
   drawingContext.setLineDash([5, 5]);
   strokeWeight(sw)
   waves1.forEach(w => {
-    w.draw();
-  });
-  translate(canvassize*0.5*cos(frameCount*0.5),0)
-  rotate(-2*frameCount);
-  waves2.forEach(w => {
     w.draw();
   });
 
