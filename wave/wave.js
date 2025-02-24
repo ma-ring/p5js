@@ -6,7 +6,7 @@ class wave{
         this.csize = csize;
         this.color = [random(255),random(255),random(255)];
         this.speed = random(-1.5,1.5);
-        this.start = random(20);
+        this.start = random(-20);
         this.dash = random(5,50);
     }
 
