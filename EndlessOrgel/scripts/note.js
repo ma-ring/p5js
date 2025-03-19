@@ -1,5 +1,5 @@
 let oscs = [];
-let CELL = 21;
+let CELL = 20;
 var notes = [ 48, 50, 52, 53, 55, 57, 59,
 	            60, 62, 64, 65, 67, 69, 71,
 						  72, 74, 76, 77, 79, 81, 83];
@@ -10,7 +10,7 @@ function soundinit(){
 	for(var i = 0; i < CELL;i++){
 		var nimod = i%21;
 		var ni = floor(nimod/21);
-		var n = new myNote(notes[nimod]);
+		var n = new myNote(notes[nimod]+ni*21);
 		oscs.push(n);
 	}
 	
@@ -27,7 +27,7 @@ function myNote(note){
 
 	this.play = function(){
         this.osc.freq(this.freq);
-  	    this.osc.amp(0.05, 0.1);
+  	    this.osc.amp(0.001, 0.1);
 
         setTimeout(() => {
             this.osc.amp(0);

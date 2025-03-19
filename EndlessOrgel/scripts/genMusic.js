@@ -26,7 +26,13 @@ class genMusic{
     async play(sequence){
         sequence.notes.forEach(n => {
             //n.program = 90;
+            n.velocity = 10;
         });
+        //
+        // 
+        if (this.player.isPlaying) {
+            this.player.stop(); // 前の再生を止める
+        }
         this.player.start(sequence);
     }
 }

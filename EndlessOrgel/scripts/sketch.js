@@ -8,49 +8,75 @@ let fps = 30;
 let qbm = 120;
 let orgenstep = 60/120*1000;
 let stepSQ = 4;
-let genInterval = 2000;
+let genInterval = 5000;
 let stepinterval;
 let genStepNum;
 
 let lastAttackTime = 0;
 let lastgenTime = 0;
 
+let cap;
+let w,h,size;
 
+let mCanvas;
+let mProcessor;
+let mProcessor1;
 
 function preload(){
-  imgFile = loadImage("hokusai.jpg");
+  cap = createVideo("resources/astrodance.mov");// createCapture(VIDEO);
+  cap.volume(0);
+  cap.hide();
+  w = 1920;//cap.width;
+  h = 1080;//cap.height;
+
 }
+
 function setup() {
-  createCanvas(canvas, canvas);
-  pScanner = new pixelScanner(canvas);
+  frameRate(fps);
+  cap.loop();
+  mCanvas = createCanvas(canvas, canvas);
+  pScanner = new pixelBandScanner(canvas);
   musicGenerator = new genMusic();
-  var w = imgFile.width;
-  var h = imgFile.height;
-  var size = w > h ? h : w;
+  size = canvas;//w > h ? h : w;
+
+  w = w*size/h;
+  h = size;
+
   diskImage = createGraphics(size,size);
-  diskImage.beginClip();
-  diskImage.circle(size*0.5,size*0.5,size,size);
-  diskImage.endClip();
-  diskImage.image(imgFile,-(w-size)*0.5,-(h-size)*0.5);
+
   noStroke();
 
-  frameRate(fps);
   orgenstep = round(orgenstep);
   stepinterval = 60/(qbm*stepSQ);
   genStepNum = floor(genInterval / stepinterval/1000)-5;
+
+  mProcessor = new imgProcess(size);
+  mProcessor.setupDOF(pScanner.step);
+  
+  mProcessor1 = new imgProcess(size);
+  mProcessor1.setupBGDIFF();
+
+  blendMode(ADD);
 }
 
 function draw() {
   var ct = millis();
+  clear(0);
   push();
-  background(0);
-  translate(canvas*0.5,canvas*0.5);
-  rotate(frameCount*0.005);
-  image(diskImage,-canvas*0.5,-canvas*0.5,canvas,canvas);
+  diskImage = mProcessor1.process(mCanvas,cap);
+
+  image(cap,(h-w)*0.5,0,w,h);
+
+  image(diskImage,0,0);
+  diskImage = mProcessor.process(mCanvas,cap);
+
+  
+
+
   pop();
 
   if(ct - lastAttackTime > orgenstep ){
-    pScanner.scanPixel();
+    pScanner.scanPixel(diskImage);
     lastAttackTime = ct
   }
 
@@ -64,8 +90,9 @@ function draw() {
 }
 
 function mouseClicked(){
-  //getMusic();
+  console.log("sound")
 }
+
 
 function getMusic() {
   // シード NoteSequence の定義（絶対タイミング）

@@ -3,6 +3,7 @@ class pixelScanner{
     constructor(canvassize){
         this.canvassize = canvassize;
         this.scanpoints = [];
+
         this.step = (ceil)((this.canvassize*0.5) / CELL);
         for(var y = this.canvassize*0.5; y < this.canvassize; y+=this.step ){
             this.scanpoints.push([this.canvassize*0.5,y,false,0,0,0]);
@@ -13,6 +14,10 @@ class pixelScanner{
         soundinit();
     }
 
+    setScanLine(){
+        
+    }
+
     scanPixel(){
         loadPixels();
         var r,g,b,v;
@@ -20,11 +25,8 @@ class pixelScanner{
         var i = 0;
         var st = this.count*0.5;
         var et = (this.count+1)*0.5-0.4;
+
         this.scanpoints.forEach(p => {
-            //idx = 3*(p[0] + p[1]*this.canvassize);
-            //r = pixels[idx];
-            //g = pixels[idx+1];
-            //g = pixels[idx+1];
             r = 0; g = 0; b = 0;
             for(var d = 0; d < this.step;d++){
                 idx = 4*(p[0] + (p[1]+d)*this.canvassize);
@@ -38,7 +40,7 @@ class pixelScanner{
             p[4] = g;
             p[5] = b;
 
-            if(v > 200){
+            if(v > 150){
                 oscs[i].play()
                 p[2] = true;
                 p[3] = r;
@@ -55,7 +57,6 @@ class pixelScanner{
         });
 
         this.count++;
-
     }
     
     draw(){
